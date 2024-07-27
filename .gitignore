@@ -272,5 +272,7 @@ media/*
 .idea/
 .idea/*
 
-
+apps/fixtures
+apps/migrations
+fenix.zip
 
