@@ -1,0 +1,136 @@
+{% extends 'apps/base.html' %}
+{% load humanize %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row flex-between-center">
+                <div class="col-sm-auto mb-2 mb-sm-0">
+                    <h6 class="mb-0">Showing {{ page_obj.start_index }}-{{ page_obj.end_index }}
+                        of {{ page_obj.paginator.count }} Products</h6>
+                </div>
+                <div class="col-sm-auto">
+                    <div class="row gx-2 align-items-center">
+                        <div class="col-auto">
+                            <form class="row gx-2">
+                                <div class="col-auto"><small>Sort by:</small></div>
+                                <div class="col-auto">
+                                    <select class="form-select form-select-sm" aria-label="Sort products">
+                                        <option selected="">Best Match</option>
+                                        <option value="Newest">Newest</option>
+                                        <option value="Price">Price</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-auto pe-0">
+                            <a class="text-600 px-1" href="{% url 'product_list_page' %}" data-bs-toggle="tooltip"
+                               data-bs-placement="top" title="Product List" aria-label="Product List">
+                                <svg class="svg-inline--fa fa-list-ul fa-w-16" aria-hidden="true" focusable="false"
+                                     data-prefix="fas" data-icon="list-ul" role="img" xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 512 512" data-fa-i2svg="">
+                                    <path fill="currentColor"
+                                          d="M48 48a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm448 16H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                {% for product in products %}
+                    <div class="mb-4 col-md-6 col-lg-4">
+                        <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">
+                            <div class="overflow-hidden">
+                                <div class="position-relative rounded-top overflow-hidden">
+                                    <div class="swiper-container theme-slider h-100"
+                                         data-swiper='{"autoplay":true,"autoHeight":true,"spaceBetween":5,"loop":true,"loopedSlides":5,"navigation":{"nextEl":".swiper-button-next","prevEl":".swiper-button-prev"}}'>
+                                        <div class="swiper-wrapper h-100">
+                                            {% for p_image in product.images.all %}
+                                                <div class="swiper-slide h-100"><a class="d-block h-sm-100"
+                                                                                   href="{% url 'product_detail' product.pk %}"><img
+                                                        class="rounded-1 h-100 w-100 fit-cover"
+                                                        src="{{ p_image.image.url }}" alt=""/></a>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="swiper-nav">
+                                            <div class="swiper-button-next swiper-button-white"></div>
+                                            <div class="swiper-button-prev swiper-button-white"></div>
+                                        </div>
+                                    </div>
+                                    {% if product.is_new %}
+                                        <div class="badge rounded-pill bg-success position-absolute top-0 end-0 me-2 mt-2 fs--2 z-index-2">
+                                            New
+                                        </div>
+                                    {% else %}
+                                        <div class="badge rounded-pill bg-secondary position-absolute top-0 end-0 me-2 mt-2 fs--2 z-index-2">
+                                            Old
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="p-3">
+                                    <h5 class="fs-0">
+                                        <a class="text-dark"
+                                           href="{% url 'product_detail' product.pk %}">{{ product.title }}</a>
+                                    </h5>
+                                    <p class="fs--1 mb-3">
+                                        <a class="text-500"
+                                           href="{% url 'product_list_page' %}?category={{ product.category.slug }}">{{ product.category }}</a>
+                                    </p>
+                                    <h4 class="fs-1 fs-md-2 text-warning mb-0">
+                                        ${{ product.current_price|intcomma }}</h4>
+                                    {% if product.discount_percent|intcomma %}
+                                        <h5 class="fs--1 text-500 mb-0 mt-1">
+                                            <del>${{ product.price|intcomma }}</del>
+                                            <span class="ms-1">-{{ product.discount_percent|intcomma }}%</span>
+                                        </h5>
+                                    {% endif %}
+                                    <p class="fs--1 mb-1">Shipping Cost: <strong>${{ product.shipping_cost }}</strong>
+                                        {% if product.quantity == 0 %}
+                                            <p class="fs--1 mb-1">Stock: <strong
+                                                    class="text-danger">Sold-Out</strong>
+                                            </p>
+                                        {% else %}
+                                            <p class="fs--1 mb-1">Stock: <strong
+                                                class="text-success">Available</strong>
+                                        {% endif %}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-between-center px-3">
+                                <div>
+                                    <span class="fa fa-star text-warning"></span>
+                                    <span class="fa fa-star text-warning"></span>
+                                    <span class="fa fa-star text-warning"></span>
+                                    <span class="fa fa-star text-warning"></span>
+                                    <span class="fa fa-star text-300"></span>
+                                    <span class="ms-1">(8)</span>
+                                </div>
+                                <div>
+                                    <a {% if user|is_liked:product %} style="background-color: red"{% endif %}
+                                                                      class="btn btn-sm btn{% if not user|is_liked:product %}-outline{% endif %}-danger border-300"
+                                                                      href="{% url 'favorite_page' product.id %}"
+                                                                      data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                      title="Add to Favourite List">
+                                        <span class="far fa-heart me-1"></span>
+                                        {{ product.favorite_set.count }}
+                                    </a>
+                                    <a class="btn btn-sm btn-falcon-default" href="{% if user.is_authenticated %}{% url 'add_cart_page' product.pk %}{% else %}{% url 'login_page' %}{% endif %}"
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span
+                                            class="fas fa-cart-plus"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% include 'apps/parts/_pagination.html' %}
+    </div>
+{% endblock %}

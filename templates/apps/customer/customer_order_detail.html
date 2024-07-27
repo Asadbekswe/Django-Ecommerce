@@ -1,0 +1,104 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+    <div class="card mb-3">
+        <div class="bg-holder d-none d-lg-block bg-card"
+             style="background-image:url({% static 'apps/assets/img/icons/spot-illustrations/corner-4.png' %});opacity: 0.7;">
+        </div>
+        <div class="card-body position-relative">
+            <h5>Order Details: #{{ order.id }}</h5>
+            <button class="btn btn-falcon-default btn-sm me-1 mb-2 mb-sm-0 border-end" type="button"
+                    style="border-right-color: #000; border-right-width: 2px;">
+                <span class="fas fa-arrow-down me-1"></span>Download (.pdf)
+            </button>
+            <p class="fs--1">{{ order.created_at }}</p>
+            <div>
+                <strong class="me-2">Status: </strong>
+                <div class="badge rounded-pill badge-soft-success fs--2">{{ order.status.title }}<span
+                        class="fas fa-check ms-1"
+                        data-fa-transform="shrink-2"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="mb-3 fs-0">Shopping Address</h5>
+                    <h6 class="mb-2">{{ order.address.full_name }}</h6>
+                    <p class="mb-1 fs--1">{{ order.address.street }}<br/>{{ order.address.city }}, {{ order.address.zip_code }}
+                    </p>
+                    <p class="mb-0 fs--1"><strong>Email: </strong>
+                        <a href="mailto:{{ order.owner.email }}">{{ order.owner.email }}</a></p>
+                    <p class="mb-0 fs--1"><strong>Phone: </strong><a
+                            href="tel:{{ order.address.phone }}">{{ order.address.phone }}</a></p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="mb-3 fs-0">Payment Method</h5>
+                    <div class="d-flex"><img class="me-3" src="{% static 'apps/assets/img/icons/visa.png' %}" width="40"
+                                             height="30" alt=""/>
+                        <div class="flex-1">
+                            <h6 class="mb-0">{{ order.address.full_name }}</h6>
+                            <p class="mb-0 fs--1"> {{ order.creditcard.number }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="table-responsive fs--1">
+                <table class="table table-striped border-bottom">
+                    <thead class="bg-200 text-900">
+                    <tr>
+                        <th class="border-0">Products</th>
+                        <th class="border-0 text-center">Quantity</th>
+                        <th class="border-0 text-end">Rate</th>
+                        <th class="border-0 text-end">Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order_item in order.orderitem_set.all %}
+                        <tr class="border-200">
+                            <td class="align-middle">
+                                <h6 class="mb-0 text-nowrap">{{ order_item.product.title }}</h6>
+                                <p class="mb-0">{{ order_item.product.short_description|truncatewords:5 }}</p>
+                            </td>
+                            <td class="align-middle text-center">{{ order_item.quantity }}</td>
+                            <td class="align-middle text-end">${{ order_item.product.current_price }}</td>
+                            <td class="align-middle text-end">
+                                ${{ order_item.quantity|multiplication:order_item.product.current_price }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="row g-0 justify-content-end">
+                <div class="col-auto">
+                    <table class="table table-sm table-borderless fs--1 text-end">
+                        <tr>
+                            <th class="text-900">Subtotal:</th>
+                            <td class="fw-semi-bold">${{ subtotal }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-900">Shipping Cost:</th>
+                            <td class="fw-semi-bold">${{ shipping_cost }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-900">Tax {{ tax }}%:</th>
+                            <td class="fw-semi-bold">${{ subtotal|add:shipping_cost|tax_sum:tax }}</td>
+                        </tr>
+                        <tr class="border-top">
+                            <th class="text-900">Total:</th>
+                            <td class="fw-semi-bold">${{ subtotal|add:shipping_cost|tax_sum:tax|total_sum:subtotal|add:shipping_cost }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
