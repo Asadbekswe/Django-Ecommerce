@@ -5,12 +5,12 @@ from dotenv import load_dotenv
 
 from core.jazzmine import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
 
-load_dotenv('.env')
+# load_dotenv('.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('DEBUG')
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG")
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'import_export',
     'django_celery_results',
     'django_celery_beat',
-    'flower',
     'mptt',
     'debug_toolbar',
     'django.contrib.humanize',
@@ -87,8 +86,11 @@ AUTH_USER_MODEL = 'apps.User'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("PG_NAME"),
+        'HOST': os.getenv("PG_HOST"),
+        'PORT': os.getenv("PG_PORT"),
+        "USER": os.getenv("PG_USER"),
     }
 }
 
@@ -225,9 +227,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+# CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_CACHE_BACKEND = 'default'
 

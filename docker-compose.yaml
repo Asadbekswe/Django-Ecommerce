@@ -1,0 +1,32 @@
+services:
+  django_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python3 manage.py runserver 0:8042
+    ports:
+      - 8000:8000
+    volumes:
+      - static_volume_p22:/app/static
+      - media_volume_p22:/app/media
+    env_file: .env
+    depends_on:
+      - fenix_service
+
+  postgres_service:
+    image:
+    - postgres:alpine
+    environment:
+      - POSTGRES_PASSWORD=1
+    ports:
+      - 5441:5432
+    volumes:
+      - fenix_og_data:/var/lib/postgresql/data
+
+volumes:
+  fenix_og_data:
+  static_volume:
+  media_volume:
+
+
+
