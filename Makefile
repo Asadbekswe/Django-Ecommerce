@@ -22,3 +22,5 @@ image:
 
 container:
 	docker run --name django_container -p 8000:8000 -d django_image
+compose:
+	docker compose up
