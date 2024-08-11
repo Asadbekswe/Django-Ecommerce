@@ -85,12 +85,14 @@ AUTH_USER_MODEL = 'apps.User'
 
 DATABASES = {
     'default': {
+        # use this if you want to run locally
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'NAME': "your pg name",
-        # 'HOST': "localhost",
+        # 'HOST': "your pg host",
         # 'PORT': "543*",
         # "USER": "postgres",
         # "PASSWORD": "*",
+        # If you want to run it in a container
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": os.getenv('PG_NAME'),
         "USER": os.getenv('PG_USER'),
