@@ -9,8 +9,8 @@ from core.jazzmine import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG")
+SECRET_KEY = 'django-insecure-(^wf#w5@&u4vl&vk5$me0h4n&df0n0rxco=*ll00bo4r+x_7fi'
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -35,14 +35,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.telegram',
     'allauth.socialaccount.providers.github',
-    'django_recaptcha'
-
+    'django_recaptcha',
 ]
 SITE_ID = 1
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://e415-178-218-201-17.ngrok-free.app'
-]
+# CSRF_TRUSTED_ORIGINS = [  temp server in ngrok
+#     'https://e415-178-218-201-17.ngrok-free.app'
+# ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -86,11 +85,18 @@ AUTH_USER_MODEL = 'apps.User'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("PG_NAME"),
-        'HOST': os.getenv("PG_HOST"),
-        'PORT': os.getenv("PG_PORT"),
-        "USER": os.getenv("PG_USER"),
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': "my_db",
+        # 'HOST': "localhost",
+        # 'PORT': "5432",
+        # "USER": "postgres",
+        # "PASSWORD": "1",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.getenv('PG_NAME'),
+        "USER": os.getenv('PG_USER'),
+        "PASSWORD": os.getenv('PG_PASSWORD'),
+        "HOST": os.getenv('PG_HOST'),
+        "PORT": os.getenv('PG_PORT')
     }
 }
 
@@ -227,9 +233,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis_service:6379/0'
 # CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-# CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_CACHE_BACKEND = 'default'
 
@@ -276,10 +282,10 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-    "localhost"
-]
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+#     "localhost"
+# ]
 
 RECAPTCHA_PUBLIC_KEY = '6LejhxkqAAAAAN0NnTsS7JuTDxUkbR9KpdVVwNBc'
 RECAPTCHA_PRIVATE_KEY = '6LejhxkqAAAAAHkZg4-jmaFbhO3uutBi_HgFswXM'
