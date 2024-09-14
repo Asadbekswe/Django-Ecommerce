@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from core.jazzmine import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
 
-# load_dotenv('.env')
+load_dotenv('.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -86,19 +86,19 @@ AUTH_USER_MODEL = 'apps.User'
 DATABASES = {
     'default': {
         # use this if you want to run locally
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "falcon_db",
-        'HOST': "localhost",
-        'PORT': "5432",
-        "USER": "postgres",
-        "PASSWORD": "1",
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': "*",
+        # 'HOST': "localhost",
+        # 'PORT': "543*",
+        # "USER": "postgres",
+        # "PASSWORD": "*",
         # If you want to run it in a container
-        # "ENGINE": "django.db.backends.postgresql",
-        # "NAME": os.getenv('PG_NAME'),
-        # "USER": os.getenv('PG_USER'),
-        # "PASSWORD": os.getenv('PG_PASSWORD'),
-        # "HOST": os.getenv('PG_HOST'),
-        # "PORT": os.getenv('PG_PORT')
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv('PG_NAME'),
+        "USER": os.getenv('PG_USER'),
+        "PASSWORD": os.getenv('PG_PASSWORD'),
+        "HOST": os.getenv('PG_HOST'),
+        "PORT": os.getenv('PG_PORT')
     }
 }
 
@@ -289,6 +289,5 @@ SOCIALACCOUNT_PROVIDERS = {
 #     "localhost"
 # ]
 
-RECAPTCHA_PUBLIC_KEY = '6LejhxkqAAAAAN0NnTsS7JuTDxUkbR9KpdVVwNBc'
-RECAPTCHA_PRIVATE_KEY = '6LejhxkqAAAAAHkZg4-jmaFbhO3uutBi_HgFswXM'
-# SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
