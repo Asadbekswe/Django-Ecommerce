@@ -22,7 +22,6 @@
         <a class="btn btn-sm btn-falcon-default me-2" href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">{{ page_obj.previous_page_number }}</a>
     {% endif %}
 
-    <a class="btn btn-sm btn-falcon-default text-primary me-2" href="#">{{ page_obj.number }}</a>
 
     {% if page_obj.has_next %}
         <a class="btn btn-sm btn-falcon-default me-2" href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">{{ page_obj.next_page_number }}</a>
