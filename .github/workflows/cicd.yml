@@ -17,4 +17,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/asadbek
-            mkdir new
+            git pull
+            systemctl restart asadbek.service
