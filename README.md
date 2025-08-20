@@ -1,5 +1,1 @@
-# Django E-Commerce Website
-Welcome to my Django e-commerce project. This project is designed to...
-
-
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+This is Ecommerce web site write backend https://prium.github.io/falcon/v3.25.0/index.html
